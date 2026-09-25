@@ -647,203 +647,163 @@ with e3:
 
 
 # =========================================================
-# QUERY BOX
+# QUERY BOX + PROCESSING
 # =========================================================
 
 st.subheader("Ask a question")
 
 question = st.text_input(
     "Mutual fund question",
-    key="question_input",
-    placeholder=(
-        "e.g. What is the exit load of HDFC Flexi Cap Fund?"
-    ),
+    value=st.session_state.get("question_input", ""),
+    placeholder="e.g. What is the exit load of HDFC Flexi Cap Fund?",
     label_visibility="collapsed"
 )
 
-b1, b2 = st.columns([1, 5])
+ask_clicked = st.button(
+    "Ask",
+    type="primary",
+    use_container_width=False
+)
 
-with b1:
-    ask_clicked = st.button(
-        "Ask",
-        type="primary",
-        use_container_width=True
-    )
+if ask_clicked and question.strip():
 
-with b2:
-    clear_clicked = st.button(
-        "Clear",
-        use_container_width=False
-    )
+    query_type = classify_query(question)
 
-if clear_clicked:
-    clear_question()
-    st.rerun()
+    # -------------------------
+    # PII
+    # -------------------------
 
+    if query_type == "pii":
 
-# =========================================================
-# QUERY PROCESSING
-# =========================================================
+        st.warning(
+            "🔒 **Please don't share personal information.** "
+            "This assistant does not accept or process PAN, Aadhaar, "
+            "account numbers, OTPs, email addresses or phone numbers. "
+            "You can ask public factual questions about supported schemes."
+        )
 
-if ask_clicked:
+    # -------------------------
+    # ADVICE
+    # -------------------------
 
-    if not question.strip():
+    elif query_type == "advice":
 
-        st.warning("Please enter a question.")
+        st.warning(
+            "🛡️ **Facts-only assistant.** "
+            "I can provide verified facts about mutual fund schemes, "
+            "but I can't recommend whether you should buy, sell, hold, "
+            "redeem or switch a fund. Ask about the scheme's SIP, "
+            "expense ratio, exit load, lock-in, riskometer or benchmark."
+        )
+
+        st.markdown(
+            "**Educational resource:** "
+            "[SEBI Investor — Mutual Funds]"
+            "(https://investor.sebi.gov.in/securities-mf-investments.html)"
+        )
+
+    # -------------------------
+    # PERFORMANCE
+    # -------------------------
+
+    elif query_type == "performance":
+
+        st.warning(
+            "📉 **Performance request restricted.** "
+            "I don't calculate, predict or compare mutual fund returns. "
+            "Please refer to official AMC sources for published "
+            "scheme information and historical disclosures."
+        )
+
+        st.markdown(
+            "**Educational resource:** "
+            "[SEBI Investor — Mutual Funds]"
+            "(https://investor.sebi.gov.in/securities-mf-investments.html)"
+        )
+
+    # -------------------------
+    # UNSUPPORTED FUND
+    # -------------------------
+
+    elif query_type == "unsupported":
+
+        st.info(
+            "ℹ️ **Outside the current corpus.** "
+            "I couldn't verify this from the available official sources. "
+            "This prototype currently supports HDFC Flexi Cap Fund, "
+            "HDFC ELSS Tax Saver Fund and HDFC Large Cap Fund."
+        )
+
+    # -------------------------
+    # FACTUAL QUERY
+    # -------------------------
 
     else:
 
-        st.session_state["queries_answered"] += 1
+        retrieved_doc, score, method = retrieve(question)
 
-        query_type = classify_query(question)
+        if retrieved_doc is None:
 
-        # -------------------------
-        # PII
-        # -------------------------
-
-        if query_type == "pii":
-
-            st.warning(
-                "🔒 **Please don't share personal information.** "
-                "This assistant does not accept or process PAN, Aadhaar, "
-                "account numbers, OTPs, email addresses or phone numbers. "
-                "You can ask public factual questions about supported schemes."
+            st.error(
+                "I couldn't verify this from the available official "
+                "sources. Try mentioning one of the supported scheme "
+                "names and the exact fact you need."
             )
-
-        # -------------------------
-        # ADVICE
-        # -------------------------
-
-        elif query_type == "advice":
-
-            st.warning(
-                "🛡️ **Facts-only assistant.** "
-                "I can provide verified facts about mutual fund schemes, "
-                "but I can't recommend whether you should buy, sell, hold, "
-                "redeem or switch a fund. Ask me about the scheme's SIP, "
-                "expense ratio, exit load, lock-in, riskometer or benchmark."
-            )
-
-            st.markdown(
-                "**Educational resource:** "
-                "[SEBI Investor — Mutual Funds]"
-                "(https://investor.sebi.gov.in/securities-mf-investments.html)"
-            )
-
-        # -------------------------
-        # PERFORMANCE
-        # -------------------------
-
-        elif query_type == "performance":
-
-            st.warning(
-                "📉 **Performance request restricted.** "
-                "I don't calculate, predict or compare mutual fund returns. "
-                "Please use the linked official AMC sources for published "
-                "scheme information and historical disclosures."
-            )
-
-            st.markdown(
-                "**Educational resource:** "
-                "[SEBI Investor — Mutual Funds]"
-                "(https://investor.sebi.gov.in/securities-mf-investments.html)"
-            )
-
-        # -------------------------
-        # UNSUPPORTED FUND
-        # -------------------------
-
-        elif query_type == "unsupported":
-
-            st.info(
-                "ℹ️ **Outside the current corpus.** "
-                "I couldn't verify this from the available official sources. "
-                "This prototype currently supports HDFC Flexi Cap Fund, "
-                "HDFC ELSS Tax Saver Fund and HDFC Large Cap Fund."
-            )
-
-        # -------------------------
-        # FACTUAL QUERY
-        # -------------------------
 
         else:
 
-            retrieved_doc, score, method = retrieve(question)
+            answer, status = generate_answer(
+                question,
+                retrieved_doc
+            )
 
-            if retrieved_doc is None:
+            if status == "unknown_fact":
 
-                st.error(
-                    "I couldn't verify this from the available official "
-                    "sources. Try mentioning one of the supported scheme "
-                    "names and the exact fact you need."
+                st.info(
+                    "I found the relevant scheme, but I couldn't identify "
+                    "a supported factual field in your question. "
+                    "Try asking about SIP, expense ratio, exit load, "
+                    "lock-in, riskometer or benchmark."
+                )
+
+            elif status == "fact_not_available":
+
+                st.info(
+                    "I couldn't verify that specific fact from the "
+                    "available indexed official information."
                 )
 
             else:
 
-                answer, status = generate_answer(
-                    question,
-                    retrieved_doc
+                st.success("✓ Verified from indexed official source")
+
+                st.markdown("### Answer")
+
+                st.write(answer)
+
+                st.markdown(
+                    f"**Source:** "
+                    f"[{retrieved_doc['scheme']} — HDFC Mutual Fund]"
+                    f"({retrieved_doc['source']})"
                 )
 
-                if status == "unknown_fact":
+                col_a, col_b = st.columns(2)
 
-                    st.info(
-                        "I found the relevant scheme, but I couldn't identify "
-                        "a supported factual field in your question. "
-                        "Try asking about SIP, expense ratio, exit load, "
-                        "lock-in, riskometer or benchmark."
+                with col_a:
+                    st.caption(
+                        "Retrieval confidence: "
+                        f"{confidence_label(score, method)}"
                     )
 
-                elif status == "fact_not_available":
-
-                    st.info(
-                        "I couldn't verify that specific fact from the "
-                        "available indexed official information."
+                with col_b:
+                    st.caption(
+                        "Last updated from sources: "
+                        f"{date.today().strftime('%d %b %Y')}"
                     )
 
-                else:
+elif ask_clicked:
 
-                    st.markdown(
-                        """
-                        <div class="answer-card">
-                            <b>Verified answer</b>
-                        </div>
-                        """,
-                        unsafe_allow_html=True
-                    )
-
-                    st.markdown(f"### {answer}")
-
-                    st.markdown(
-                        f"""
-                        <div class="source-box">
-                            <b>Official source</b><br>
-                            <a href="{retrieved_doc['source']}" target="_blank">
-                                {retrieved_doc['scheme']} — HDFC Mutual Fund
-                            </a>
-                        </div>
-                        """,
-                        unsafe_allow_html=True
-                    )
-
-                    meta1, meta2, meta3 = st.columns(3)
-
-                    with meta1:
-                        st.caption(
-                            f"Scheme: {retrieved_doc['scheme']}"
-                        )
-
-                    with meta2:
-                        st.caption(
-                            "Retrieval confidence: "
-                            f"{confidence_label(score, method)}"
-                        )
-
-                    with meta3:
-                        st.caption(
-                            "Last updated from sources: "
-                            f"{date.today().strftime('%d %b %Y')}"
-                        )
+    st.warning("Please enter a question.")
 
 
 # =========================================================
