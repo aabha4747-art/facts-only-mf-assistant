@@ -1,1 +1,16 @@
-
+source_id,source_name,source_type,url
+S01,HDFC Flexi Cap Fund,Scheme Page,https://www.hdfcfund.com/explore/mutual-funds/hdfc-flexi-cap-fund/direct
+S02,HDFC ELSS Tax Saver Fund,Scheme Page,https://www.hdfcfund.com/explore/mutual-funds/hdfc-elss-tax-saver-fund/direct
+S03,HDFC Large Cap Fund,Scheme Page,https://www.hdfcfund.com/explore/mutual-funds/hdfc-large-cap-fund/direct
+S04,HDFC Key Information Memorandum Repository,KIM,https://www.hdfcfund.com/mutual-funds/fund-documents/kim
+S05,HDFC Scheme Information Document Repository,SID,https://www.hdfcfund.com/mutual-funds/fund-documents/sid
+S06,HDFC Scheme Summary Repository,Scheme Summary,https://www.hdfcfund.com/mutual-funds/fund-documents/scheme-summary
+S07,HDFC Forms and Downloads,Investor Services,https://www.hdfcfund.com/services/forms
+S08,HDFC Subscription FAQs,FAQ,https://www.hdfcfund.com/services/faqs/subscription-related-faqs
+S09,HDFC Statutory Disclosures,Disclosure,https://www.hdfcfund.com/statutory-disclosure
+S10,HDFC Offer Document Disclosures,Disclosure,https://www.hdfcfund.com/statutory-disclosure/offer-document-disclosures
+S11,HDFC Addenda and Notices,Disclosure,https://www.hdfcfund.com/investor-services/form-disclosures/addenda-notices
+S12,SEBI Understanding Regular and Direct Mutual Funds,Investor Education,https://investor.sebi.gov.in/regular_and_direct_mutual_funds.html
+S13,SEBI Mutual Fund Investments and NAV,Investor Education,https://investor.sebi.gov.in/securities-mf-investments.html
+S14,SEBI Mutual Fund Investor Education,Investor Education,https://www.sebi.gov.in/sebi_data/commondocs/siep_h.html
+S15,HDFC Mutual Fund Statutory Information,Disclosure,https://www.hdfcfund.com/statutory-disclosure
