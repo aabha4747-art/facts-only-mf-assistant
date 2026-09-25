@@ -11,7 +11,7 @@ without providing investment advice.
 
 **Live Prototype:** <https://facts-only-mf-assistant6commits-kwbex8uiprzbb2uspkwxxm.streamlit.app/>
 
-**GitHub Repository:** <[YOUR_GITHUB_LINK](https://github.com/aabha4747-art/facts-only-mf-assistant)>
+**GitHub Repository:** <[https://github.com/aabha4747-art/facts-only-mf-assistant>
 
 ---
 
