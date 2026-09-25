@@ -1,6 +1,2 @@
 streamlit
-openai
-requests
-beautifulsoup4
-numpy
 scikit-learn
