@@ -665,22 +665,11 @@ with st.sidebar:
 # HERO
 # =========================================================
 
+st.title("📊 Groww MF Facts Assistant")
+
 st.markdown(
-    """
-    <div class="hero">
-
-        <h1>
-            📊 Groww MF Facts Assistant
-        </h1>
-
-        <p>
-            Verified mutual fund facts from official public
-            sources — without investment advice.
-        </p>
-
-    </div>
-    """,
-    unsafe_allow_html=True
+    "Verified mutual fund facts from official public sources — "
+    "without investment advice."
 )
 
 
