@@ -127,6 +127,21 @@ document_vectors = vectorizer.fit_transform(documents)
 
 
 def retrieve(query):
+    q = query.lower()
+
+    # First identify the scheme explicitly mentioned by the user.
+    # This prevents similar scheme documents from being confused.
+    if "flexi cap" in q:
+        return knowledge_base[0]
+
+    if "elss" in q or "tax saver" in q:
+        return knowledge_base[1]
+
+    if "large cap" in q:
+        return knowledge_base[2]
+
+    # If no supported scheme is explicitly identified,
+    # fall back to vector similarity retrieval.
     query_vector = vectorizer.transform([query])
 
     similarities = cosine_similarity(
