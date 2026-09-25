@@ -171,7 +171,7 @@ def build_answer(query, doc):
 
     elif "expense" in q or "ter" in q:
         match = re.search(
-            r"Total Expense Ratio \(TER\) for the Direct Plan is [\d.]+",
+            r"Total Expense Ratio \(TER\) for the Direct Plan is [\d.]+%",
             text,
             re.I
         )
