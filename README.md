@@ -153,8 +153,7 @@ resources are used. No third-party blogs are used as factual sources.
 | 12 | https://investor.sebi.gov.in/regular_and_direct_mutual_funds.html | SEBI Investor Education |
 | 13 | https://investor.sebi.gov.in/securities-mf-investments.html | SEBI Investor Education |
 | 14 | https://www.sebi.gov.in/sebi_data/commondocs/siep_h.html | SEBI Mutual Fund Education |
-| 15 | https://www.hdfcfund.com/statutory-disclosure | HDFC Statutory Information |
-
+| 15 | [HDFC Mutual Fund Factsheets](https://www.hdfcfund.com/mutual-funds/factsheets) | Factsheet |
 A machine-readable version of the source list is also available in
 `sources.csv`.
 
