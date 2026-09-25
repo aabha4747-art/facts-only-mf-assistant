@@ -11,7 +11,7 @@ without providing investment advice.
 
 **Live Prototype:** <https://facts-only-mf-assistant6commits-kwbex8uiprzbb2uspkwxxm.streamlit.app/>
 
-**GitHub Repository:** <[https://github.com/aabha4747-art/facts-only-mf-assistant>
+**GitHub Repository:** [facts-only-mf-assistant](https://github.com/aabha4747-art/facts-only-mf-assistant)
 
 ---
 
@@ -52,28 +52,27 @@ restricting responses to factual information only.
 
 ## 🧠 How It Works
 
-The prototype follows this flow:
+The prototype follows this pipeline:
 
-User Question  
-↓  
-Query Classification  
-↓  
-Factual / Advice / Performance / PII  
-↓  
-Factual queries proceed to retrieval  
-↓  
-TF-IDF Vectorization  
-↓  
-Cosine Similarity Search  
-↓  
-Most Relevant Knowledge Chunk  
-↓  
-Fact Extraction  
-↓  
+```text
+User Question
+      ↓
+Query Classification
+      ↓
+PII / Advice / Performance / Unsupported Fund?
+      ↓
+Refuse or redirect when required
+      ↓
+Explicit Scheme Identification
+      ↓
+If no explicit scheme match:
+TF-IDF + Cosine Similarity Retrieval
+      ↓
+Fact Type Identification
+      ↓
+Grounded Fact Extraction
+      ↓
 Answer + Official Source Citation
-
-Advice, performance-prediction and PII-containing queries are intercepted by
-guardrails before retrieval.
 
 ---
 
@@ -298,7 +297,7 @@ information from the linked official source before making financial decisions.
 
 Clone the repository:
 
-    git clone <YOUR_GITHUB_LINK>
+    git clone https://github.com/aabha4747-art/facts-only-mf-assistant.git
 
 Install dependencies:
 
