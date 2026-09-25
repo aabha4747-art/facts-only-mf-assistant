@@ -201,7 +201,7 @@ def build_answer(query, doc):
 
     if match:
         sentence = match.group(0).strip()
-        return sentence[0].upper() + sentence[1:] + "."
+        return sentence[0].upper() + sentence[1:].rstrip(".") + "."
 
     return (
         "I couldn't verify this fact from the available indexed official sources."
